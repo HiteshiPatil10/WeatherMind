@@ -1,32 +1,38 @@
 import requests
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
-def get_weather(city: str) -> str:
-    """
-    Fetches current weather for a given city using OpenWeather API
-    """
+
+def get_weather(city: str) -> dict:
     api_key = os.getenv("WEATHER_API_KEY")
 
     if not api_key:
-        return "Weather API key not configured."
+        return {"error": "Weather API key not configured."}
 
-    url = (
-        f"https://api.openweathermap.org/data/2.5/weather"
-        f"?q={city}&appid={api_key}&units=metric"
-    )
+    base_url = "https://api.openweathermap.org/data/2.5/weather"
 
-    try:
-        response = requests.get(url, timeout=10)
-        data = response.json()
+    queries = [city, f"{city},IN"]
 
-        if response.status_code != 200:
-            return f"Could not find weather for {city}."
+    for q in queries:
+        try:
+            params = {
+                "q": q,
+                "appid": api_key,
+                "units": "metric"
+            }
 
-        temp = data["main"]["temp"]
-        description = data["weather"][0]["description"]
+            response = requests.get(base_url, params=params, timeout=10)
 
-        return f"The weather in {city} is {temp}°C with {description}."
+            if response.status_code == 200:
+                data = response.json()
+                return {
+                    "city": data["name"],
+                    "temp": round(data["main"]["temp"]),
+                    "feels_like": round(data["main"]["feels_like"]),
+                    "condition": data["weather"][0]["description"]
+                }
+        except Exception:
+            continue
 
-    except Exception as e:
-        return "Error fetching weather data."
+    return {"error": "City not found"}
