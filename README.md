@@ -85,3 +85,9 @@ See [.env](http://_vscodecontentref_/3) for example entries.
 
 ## License
 MIT — see
+
+## Sample Output
+<img width="1905" height="872" alt="Screenshot 2025-12-17 110057" src="https://github.com/user-attachments/assets/22bf8f87-1940-44dc-a6f6-e7859e44f6d1" />
+<img width="1916" height="878" alt="Screenshot 2025-12-17 110910" src="https://github.com/user-attachments/assets/3dd7c39f-9695-44be-bebc-c023bdecfc3c" />
+
+
